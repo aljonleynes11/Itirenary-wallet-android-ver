@@ -1,12 +1,35 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:itemerary_wallet/common/def_header.dart';
 import 'package:itemerary_wallet/common/def_textfield2.dart';
 import 'package:itemerary_wallet/common/def_title.dart';
 import 'package:itemerary_wallet/validators.dart';
+import 'package:dio/dio.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+final emailController = TextEditingController();
+forgotPassword(String email) async {
+  try {
+    Response response = await Dio().post(
+        "https://www.travezl.com/mobile/api/forgot_password.php",
+        data: {"email": email});
+    print(response);
+    if (response.statusCode == 200) {
+      final res = json.decode(response.data);
+      if (response.data.contains("error")) {
+        //alert box
+      } else {
+        //success
+      }
+    }
+  } catch (error) {
+    print(error);
+    //alertbox
+  }
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
@@ -31,8 +54,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   Container(
                     padding: EdgeInsets.all(30),
                     child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 40),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                         color: Colors.white,
                         child: Form(
                           key: _formKey,
@@ -46,21 +69,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               DefTextField2(
                                 textHint: 'Email',
                                 type: TextInputType.emailAddress,
-                                validator: Validators()
-                                    .forgotPasswordEmailValidator,
+                                validator:
+                                    Validators().forgotPasswordEmailValidator,
+                                controller: emailController,
                               ),
                               SizedBox(height: 30),
                               ButtonTheme(
                                 minWidth: double.infinity,
                                 height: 50,
                                 child: FlatButton(
-                                  onPressed: () => onSubmitPressed(),
+                                  onPressed: () =>
+                                      forgotPassword(emailController.text),
                                   color: Color(0xffFFBE22),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(5.0),
-                                    side: BorderSide(
-                                        color: Colors.transparent),
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(color: Colors.transparent),
                                   ),
                                   child: Text(
                                     'Submit',

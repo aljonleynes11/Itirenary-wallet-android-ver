@@ -4,7 +4,29 @@ import 'package:itemerary_wallet/common/def_header.dart';
 import 'package:itemerary_wallet/common/itenerary_card.dart';
 import 'package:itemerary_wallet/pages/itenerary_page/document.dart';
 
-class Itenerary extends StatelessWidget {
+class Itenerary extends StatefulWidget {
+  final List itineraryDetails;
+  final List data;
+  final String title;
+  final String startDate;
+  final String endDate;
+  final String itineraryId;
+
+  //Itenerary({this.data, this.ItineraryDetails});
+
+  Itenerary(
+      {this.data,
+      this.title,
+      this.itineraryDetails,
+      this.endDate,
+      this.startDate,
+      this.itineraryId});
+
+  @override
+  _IteneraryState createState() => _IteneraryState();
+}
+
+class _IteneraryState extends State<Itenerary> {
   var icons = [
     'airplane',
     'trolley',
@@ -15,12 +37,10 @@ class Itenerary extends StatelessWidget {
     'train',
     'noodles'
   ];
-  final List data;
-
-  Itenerary({Key key, @required this.data}) : super(key: key);
-
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
+    print(widget.itineraryDetails);
     return SafeArea(
       child: Scaffold(
         appBar: DefHeader(
@@ -28,13 +48,15 @@ class Itenerary extends StatelessWidget {
           visibility: true,
         ),
         body: Container(
-          child: Column(
-            children: <Widget>[
-              titleContainer(),
-              gridContainer(context),
-              BottomTabs()
-            ],
-          ),
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  children: <Widget>[
+                    titleContainer(),
+                    gridContainer(context),
+                    BottomTabs()
+                  ],
+                ),
         ),
       ),
     );
@@ -56,11 +78,13 @@ class Itenerary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(
-            'Hungary Business Leisure/ Trip',
+            this.widget.title.toString(),
             style: TextStyle(color: Colors.white, fontSize: 17),
           ),
           Text(
-            'May 20, 2020 May 31, 2020',
+            this.widget.startDate.toString() +
+                ' - ' +
+                this.widget.endDate.toString(),
             style: TextStyle(color: Colors.white),
           ),
         ],
@@ -74,7 +98,9 @@ class Itenerary extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 20,
         childAspectRatio: MediaQuery.of(context).size.width /
-            ((MediaQuery.of(context).size.height -  MediaQuery.of(context).padding.top)/ 3.5),
+            ((MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top) /
+                3.5),
         children: List.generate(8, (index) {
           return Center(
             child: iteneraryCard(index, context),
@@ -85,7 +111,7 @@ class Itenerary extends StatelessWidget {
   }
 
   Container iteneraryCard(index, context) {
-    bool active = data.contains(icons[index].toString());
+    bool active = widget.data.contains(icons[index].toString());
     return Container(
       child: IteneraryCard(
         onPressed: (active)
@@ -93,8 +119,10 @@ class Itenerary extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Document(icon: icons[index].toString())));
+                        builder: (context) => Document(
+                              icon: icons[index].toString(),
+                              itineraryId: this.widget.itineraryId,
+                            )));
               }
             : null,
         iconName: icons[index],

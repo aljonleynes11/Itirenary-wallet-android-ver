@@ -4,15 +4,33 @@ import 'package:itemerary_wallet/common/def_button.dart';
 import 'package:itemerary_wallet/common/def_header.dart';
 import 'package:itemerary_wallet/common/def_textfield2.dart';
 import 'package:itemerary_wallet/common/def_title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
 
+String firstName;
+String lastName;
+String email;
+getCustomer() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print(prefs.getString('customerId'));
+  print(prefs.getString('firstName'));
+  print(prefs.getString('lastName'));
+  print(prefs.getString('email'));
+  firstName = (prefs.getString('firstName'));
+  lastName = (prefs.getString('lastName'));
+  email = (prefs.getString('email'));
+}
+
+bool _isLoading = false;
+
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    getCustomer();
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -21,29 +39,31 @@ class _ProfileState extends State<Profile> {
           visibility: true,
         ),
         body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height -
-                (82 + MediaQuery.of(context).padding.top),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                DefTitle(title: 'USER PROFILE'),
-                Expanded(
-                  child: Stack(
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Container(
+                  height: MediaQuery.of(context).size.height -
+                      (82 + MediaQuery.of(context).padding.top),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Align(
-                          alignment: Alignment.topCenter,
-                          child: formContainer()),
-                      Align(
-                          alignment: Alignment.bottomCenter,
-                          child: BottomTabs(active: 'profile')),
+                      DefTitle(title: 'USER PROFILE'),
+                      Expanded(
+                        child: Stack(
+                          children: <Widget>[
+                            Align(
+                                alignment: Alignment.topCenter,
+                                child: formContainer()),
+                            Align(
+                                alignment: Alignment.bottomCenter,
+                                child: BottomTabs(active: 'profile')),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
         ),
       ),
     );
@@ -59,33 +79,33 @@ class _ProfileState extends State<Profile> {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             DefTextField2(
+              initialValue: firstName,
               textHint: 'First name',
               enabled: false,
-              initialValue: 'Ella',
               type: TextInputType.text,
             ),
             SizedBox(height: 20),
             DefTextField2(
+              initialValue: lastName,
               textHint: 'Last name',
               enabled: false,
-              initialValue: 'Williams',
               type: TextInputType.text,
             ),
             SizedBox(height: 20),
             DefTextField2(
+              initialValue: email,
               textHint: 'Email',
               enabled: false,
-              initialValue: 'ella.2020@gmail.com',
               type: TextInputType.emailAddress,
             ),
-            SizedBox(height: 20),
-            DefTextField2(
-              textHint: 'Password',
-              enabled: false,
-              initialValue: 'ellacruz',
-              obscured: true,
-              type: TextInputType.text
-            ),
+            // SizedBox(height: 20),
+            // DefTextField2(
+            //   textHint: 'Password',
+            //   enabled: false,
+            //   initialValue: 'ellacruz',
+            //   obscured: true,
+            //   type: TextInputType.text
+            // ),
             SizedBox(height: 20),
             DefButton(
                 onPressed: () =>

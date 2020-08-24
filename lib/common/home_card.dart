@@ -51,7 +51,7 @@ class HomeCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Hungary Business/Leisure Trip',
+                      this.title,
                       style: TextStyle(color: textColor),
                     ),
                   ),
@@ -62,7 +62,7 @@ class HomeCard extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: Text('May 20, 2020 Wed'),
+                        child: Text(this.date),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,

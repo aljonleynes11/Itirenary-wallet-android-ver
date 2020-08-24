@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:itemerary_wallet/pages/bottom_tab_page/Contact.dart';
 import 'package:itemerary_wallet/pages/bottom_tab_page/profile_page/change_password.dart';
@@ -12,25 +11,26 @@ import 'package:itemerary_wallet/pages/bottom_tab_page/notification_page/notific
 import 'package:itemerary_wallet/pages/search_page/search.dart';
 
 void main() => runApp(MaterialApp(
-  debugShowCheckedModeBanner: false,
-  theme: ThemeData(
-    primaryColor: Color(0xFF04294b),
-    accentColor: Color(0xffFFBE22),
-
-  ),
-  initialRoute: '/',
-  routes: {
-    '/':(context) => Login(),
-    '/forgot_password':(context) => ForgotPassword(),
-    '/home':(context) => Home(),
-    '/itenerary':(context) => Itenerary(data: [],),
-    '/document':(context) => Document(icon: '',),
-    '/contact':(context)=> Contact(),
-    '/profile':(context)=>Profile(),
-    '/change_password':(context)=>ChangePassword(),
-    '/notifications':(context)=>Notifications(),
-    '/search':(context)=>Search()
-  },
-));
-
-
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Color(0xFF04294b),
+        accentColor: Color(0xffFFBE22),
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Login(),
+        '/forgot_password': (context) => ForgotPassword(),
+        '/home': (context) => Home(),
+        '/itenerary': (context) => Itenerary(
+              data: [],
+            ),
+        '/document': (context) => Document(
+              icon: '',
+            ),
+        '/contact': (context) => Contact(),
+        '/profile': (context) => Profile(),
+        '/change_password': (context) => ChangePassword(),
+        '/notifications': (context) => Notifications(),
+        '/search': (context) => Search()
+      },
+    ));

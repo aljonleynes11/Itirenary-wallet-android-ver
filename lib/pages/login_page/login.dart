@@ -1,15 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:itemerary_wallet/common/def_button.dart';
 import 'package:itemerary_wallet/common/def_textfield.dart';
+import 'package:dio/dio.dart';
+import 'package:itemerary_wallet/common/def_textfield_obscured.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:itemerary_wallet/models/customer.dart';
 
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
+final TextEditingController emailController = new TextEditingController();
+final TextEditingController passwordController = new TextEditingController();
+bool _isLoading = false;
+// void main(List<String> args) {
+//   emailController.text = "qa2@dreamdomainz.com";
+//   passwordController.text = "123456";
+// }
+
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
+    checkAuthenticated();
+    emailController.text = "qa2@dreamdomainz.com";
+    passwordController.text = "123456";
     return Container(
       child: SafeArea(
         child: Scaffold(
@@ -17,13 +34,76 @@ class _LoginState extends State<Login> {
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.fromLTRB(40, 40, 40, 0),
-                child: Column(
-                  children: <Widget>[titleContainer(), formContainer()],
-                ),
+                child: _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
+                        children: <Widget>[titleContainer(), formContainer()],
+                      ),
               ),
             )),
       ),
     );
+  }
+
+  setPreferences(String customerId, String firstName, String lastName,
+      String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('customerId') == null ||
+        prefs.getString('firstName') == null ||
+        prefs.getString('lastName') == null ||
+        prefs.getString('email') == null)
+    // || prefs.getString('email')==null)
+    //|| prefs.getString('firstName')==null || prefs.getString('lastName')==null);
+    {
+      await prefs.setString('customerId', customerId);
+      await prefs.setString('firstName', firstName);
+      await prefs.setString('lastName', lastName);
+      await prefs.setString('email', email);
+    }
+  }
+
+  checkAuthenticated() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('customerId') != null ||
+        prefs.getString('firstName') != null ||
+        prefs.getString('lastName') != null ||
+        prefs.getString('email') != null) {
+      Navigator.pushNamed(context, '/home');
+    }
+  }
+
+  logIn(String email, password) async {
+    print(email);
+    print(password);
+    try {
+      // setState(() {
+      //   _isLoading = true;
+      // });
+      Response response = await Dio().post(
+          "https://www.travezl.com/mobile/api/login.php",
+          data: {"email": email, "password": password});
+      print(response);
+      if (response.statusCode == 200) {
+        final res = json.decode(response.data);
+
+        if (response.data.contains("error")) {
+          setState(() {
+            _isLoading = false;
+          });
+        } else {
+          // final List rawData = jsonDecode(jsonEncode(response.data));
+          // List<customer> listCustomerModel =
+          //     rawData.map((e) => customer.fromJson(e)).toList();
+          // print(res['id']);
+          setPreferences(
+              res['id'], res['first_name'], res['last_name'], res['email']);
+          Navigator.pushNamed(context, '/home');
+        }
+      }
+    } catch (error) {
+      print(error);
+      //alertbox
+    }
   }
 
   Container titleContainer() {
@@ -36,7 +116,7 @@ class _LoginState extends State<Login> {
             child: Image.asset('assets/Images/logo.png')),
         SizedBox(height: 40),
         Text(
-          "ITENERARY WALLET",
+          "ITINERARY WALLET",
           style: TextStyle(
               color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
         ),
@@ -50,17 +130,20 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           SizedBox(height: 30),
           DefTextfield(
-            textHint: 'Email',
-            icon: 'assets/Icons/email.png',
-          ),
+              controller: emailController,
+              textHint: 'Email',
+              icon: 'assets/Icons/email.png'),
           SizedBox(height: 20),
-          DefTextfield(
+          DefTextfieldObscured(
+            controller: passwordController,
             textHint: 'Password',
             icon: 'assets/Icons/lock.png',
           ),
           SizedBox(height: 20),
           DefButton(
-            onPressed: () => Navigator.pushNamed(context, '/home'),
+            onPressed: () => logIn(emailController.text.toString(),
+                passwordController.text.toString()),
+            //Navigator.pushNamed(context, '/home'),
             textTitle: 'Login',
           ),
           SizedBox(height: 10),
@@ -81,3 +164,30 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+//
+
+// showAlertDialog(BuildContext context) {
+//   // set up the button
+//   Widget okButton = FlatButton(
+//     child: Text("OK"),
+//     onPressed: () {},
+//   );
+
+//   // set up the AlertDialog
+//   AlertDialog alert = AlertDialog(
+//     title: Text("My title"),
+//     content: Text("This is my message."),
+//     actions: [
+//       okButton,
+//     ],
+//   );
+
+//   // show the dialog
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return alert;
+//     },
+//   );
+// }

@@ -8,8 +8,18 @@ class DefTextField2 extends StatelessWidget {
   final bool enabled;
   final String initialValue;
   final bool obscured;
+  final TextEditingController controller;
 
-  DefTextField2({this.textHint, this.type, this.validator, this.errorMessage, this.enabled = true,this.initialValue,this.obscured = false});
+  DefTextField2({
+    this.textHint,
+    this.type,
+    this.validator,
+    this.errorMessage,
+    this.enabled = true,
+    this.initialValue,
+    this.obscured = false,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {

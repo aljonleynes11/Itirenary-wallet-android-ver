@@ -5,9 +5,8 @@ class IteneraryCard extends StatelessWidget {
   final String iconName;
   final bool active;
 
-
-  Color get containerColor{
-    return (active)?Color(0xFF61AAE6) : Color.fromRGBO(220, 230, 240, 1);
+  Color get containerColor {
+    return (active) ? Color(0xFF61AAE6) : Color.fromRGBO(220, 230, 240, 1);
   }
 
   IteneraryCard({this.onPressed, this.iconName, this.active});
@@ -62,8 +61,7 @@ class IteneraryCard extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: Text('3',
-                  style: TextStyle(color: Colors.orange)),
+                  child: Text('3', style: TextStyle(color: Colors.orange)),
                 ),
               ),
             )
