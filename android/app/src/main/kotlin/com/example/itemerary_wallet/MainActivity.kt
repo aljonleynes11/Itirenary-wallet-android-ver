@@ -1,4 +1,4 @@
-package com.example.itemerary_wallet
+package com.travelz.itinerary.wallet
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itemerary_wallet/common/def_title.dart';
+import 'package:itinerary_wallet/common/def_title.dart';
 
 class DefHeader extends StatelessWidget implements PreferredSize {
   final double _prefferedHeight = 82.0;

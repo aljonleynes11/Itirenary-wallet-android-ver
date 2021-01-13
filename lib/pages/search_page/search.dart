@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:itemerary_wallet/common/bottom_tabs_search.dart';
+import 'package:itinerary_wallet/common/bottom_tabs_search.dart';
 
 class Search extends StatefulWidget {
   @override

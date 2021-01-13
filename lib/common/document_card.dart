@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class DocumentCard extends StatelessWidget {
+class DocumentCard extends StatefulWidget {
   final Color backColor;
   final String title;
   final String startDate;
@@ -16,27 +18,32 @@ class DocumentCard extends StatelessWidget {
       this.document,
       this.icon});
 
+  @override
+  _DocumentCardState createState() => _DocumentCardState();
+}
+
+class _DocumentCardState extends State<DocumentCard> {
   String get imgIcon {
-    return (backColor == Colors.white)
-        ? 'assets/Icons/card_icons/${icon.toString()}.png'
-        : 'assets/Icons/card_icons/${icon.toString()}3.png';
+    return (widget.backColor == Colors.white)
+        ? 'assets/Icons/card_icons/${widget.icon.toString()}.png'
+        : 'assets/Icons/card_icons/${widget.icon.toString()}3.png';
   }
 
   String get paperIcon {
-    return (backColor == Colors.white)
+    return (widget.backColor == Colors.white)
         ? 'assets/Icons/card_icons/paper.png'
         : 'assets/Icons/card_icons/paper3.png';
   }
 
   Color get textColor {
-    return (backColor == Colors.white) ? Colors.black87 : Colors.white;
+    return (widget.backColor == Colors.white) ? Colors.black87 : Colors.white;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      color: backColor,
+      color: widget.backColor,
       child: Column(
         children: <Widget>[
           Container(
@@ -48,7 +55,7 @@ class DocumentCard extends StatelessWidget {
                 SizedBox(width: 10),
                 Flexible(
                   child: Text(
-                    title,
+                    widget.title,
                     style: TextStyle(color: textColor),
                   ),
                 )
@@ -71,7 +78,7 @@ class DocumentCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        startDate + " to\n" + endDate,
+                        widget.startDate + " to\n" + widget.endDate,
                         style: TextStyle(fontSize: 13, color: textColor),
                       )
                     ],
@@ -91,12 +98,27 @@ class DocumentCard extends StatelessWidget {
                 ),
                 SizedBox(width: 10),
                 Flexible(
-                  child: Text(
-                    document,
-                    style: TextStyle(
-                      color: (backColor == Colors.white)
-                          ? Color(0xFF61AAE6)
-                          : Colors.yellow[200],
+                  child: InkWell(
+                    onTap: () async {
+                      print(widget.document);
+                      var url =
+                          'https://www.travezl.com/assets/uploads/itinerary_documents/Test%20document_1604474745.pdf?/assets/uploads/itinerary_documents/${widget.document}';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                        showToast("Download Success");
+                      } else {
+                        showToast("Download Failed");
+                        throw 'Could not launch $url';
+                        
+                      }
+                    },
+                    child: Text(
+                      widget.document,
+                      style: TextStyle(
+                        color: (widget.backColor == Colors.white)
+                            ? Color(0xFF61AAE6)
+                            : Colors.yellow[200],
+                      ),
                     ),
                   ),
                 )
@@ -106,5 +128,16 @@ class DocumentCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }

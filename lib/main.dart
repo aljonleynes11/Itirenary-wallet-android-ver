@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:itemerary_wallet/pages/bottom_tab_page/Contact.dart';
-import 'package:itemerary_wallet/pages/bottom_tab_page/profile_page/change_password.dart';
-import 'package:itemerary_wallet/pages/bottom_tab_page/profile_page/profile.dart';
-import 'package:itemerary_wallet/pages/forgot_password_page/forgot_password.dart';
-import 'package:itemerary_wallet/pages/home_page/home.dart';
-import 'package:itemerary_wallet/pages/itenerary_page/document.dart';
-import 'package:itemerary_wallet/pages/itenerary_page/itenerary.dart';
-import 'package:itemerary_wallet/pages/login_page/login.dart';
-import 'package:itemerary_wallet/pages/bottom_tab_page/notification_page/notifications.dart';
-import 'package:itemerary_wallet/pages/search_page/search.dart';
+import 'package:itinerary_wallet/pages/bottom_tab_page/contact_page.dart';
+import 'package:itinerary_wallet/pages/bottom_tab_page/profile_page/change_password_page.dart';
+import 'package:itinerary_wallet/pages/bottom_tab_page/profile_page/profile_page.dart';
+import 'package:itinerary_wallet/pages/forgot_password_page/forgot_password_page.dart';
+import 'package:itinerary_wallet/pages/home_page/home_page.dart';
+import 'package:itinerary_wallet/pages/itinerary_page/document_page.dart';
+import 'package:itinerary_wallet/pages/itinerary_page/itinerary_page.dart';
+import 'package:itinerary_wallet/pages/login_page/login_page.dart';
+import 'package:itinerary_wallet/pages/bottom_tab_page/notification_page/notification_page.dart';
+import 'package:itinerary_wallet/pages/search_page/search.dart';
+import 'package:itinerary_wallet/pages/splashscreen/splashscreen.dart';
 
 void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -18,19 +19,14 @@ void main() => runApp(MaterialApp(
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Login(),
-        '/forgot_password': (context) => ForgotPassword(),
-        '/home': (context) => Home(),
-        '/itenerary': (context) => Itenerary(
-              data: [],
-            ),
-        '/document': (context) => Document(
-              icon: '',
-            ),
-        '/contact': (context) => Contact(),
-        '/profile': (context) => Profile(),
-        '/change_password': (context) => ChangePassword(),
-        '/notifications': (context) => Notifications(),
+        '/': (context) => SplashScreen(),
+        '/login': (context) => LoginPage(),
+        '/forgot_password': (context) => ForgotPasswordPage(),
+        '/home': (context) => HomePage(),
+        '/contact': (context) => ContactPage(),
+        '/profile': (context) => ProfilePage(),
+        '/change_password': (context) => ChangePasswordPage(),
+        '/notifications': (context) => NotificationPage(),
         '/search': (context) => Search()
       },
     ));
