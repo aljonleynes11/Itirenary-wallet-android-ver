@@ -219,11 +219,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     for(var item in itineraries){
       var now = new DateTime.now();
       var endDate = DateTime.parse(item.travelEndDate);
-      bool isPast = endDate.isAfter(now);
-
+      
+      bool isPast = endDate.isBefore(now);
+      print(isPast);
+      
+      
+      
       upComingItineraries.clear();
       pastItineraries.clear();
-      if(item.status != "1" || isPast) {
+      if(item.status != "1" || isPast == true) {
         pastItineraries.add(item);
       } else {
         upComingItineraries.add(item);
