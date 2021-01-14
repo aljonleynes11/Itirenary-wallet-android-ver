@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttert?oast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DocumentCard extends StatefulWidget {
@@ -105,9 +105,9 @@ class _DocumentCardState extends State<DocumentCard> {
                           'https://www.travezl.com/assets/uploads/itinerary_documents/Test%20document_1604474745.pdf?/assets/uploads/itinerary_documents/${widget.document}';
                       if (await canLaunch(url)) {
                         await launch(url);
-                        showToast("Download Success");
+                        showAlertDialog("PDF Downloaded","Download Success");
                       } else {
-                        showToast("Download Failed");
+                        showAlertDialog("PDF Not found","Download Failed");
                         throw 'Could not launch $url';
                         
                       }
@@ -130,14 +130,30 @@ class _DocumentCardState extends State<DocumentCard> {
     );
   }
 
-  showToast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
+ 
+  showAlertDialog(String title, String message) {
+
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () { },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text(title),
+    content: Text(message),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 }

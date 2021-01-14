@@ -26,7 +26,7 @@ dependencies:
   transparent_image: ^1.0.0
   intl: ^0.16.1
   url_launcher: ^5.7.10
-  fluttertoast: ^7.1.6
+  # fluttertoast: ^7.1.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -81,3 +81,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+module:
+   
+  androidX: true # Add this line.
