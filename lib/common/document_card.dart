@@ -1,6 +1,13 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:fluttert?oast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+
+import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 class DocumentCard extends StatefulWidget {
   final Color backColor;
@@ -103,13 +110,20 @@ class _DocumentCardState extends State<DocumentCard> {
                       print(widget.document);
                       var url =
                           'https://www.travezl.com/assets/uploads/itinerary_documents/Test%20document_1604474745.pdf?/assets/uploads/itinerary_documents/${widget.document}';
-                      if (await canLaunch(url)) {
-                        await launch(url);
-                        showAlertDialog("PDF Downloaded","Download Success");
-                      } else {
-                        showAlertDialog("PDF Not found","Download Failed");
-                        throw 'Could not launch $url';
+                      try {
+                        _launchURL(url);
+                        // var dio = Dio();
+
+                        // Directory appDocDir =
+                        //     await getApplicationDocumentsDirectory();
+                        // String appDocPath = appDocDir.path;
+                        // String fullPath = appDocPath + ".pdf'";
                         
+                        // print('full path $fullPath');
+                        // download2(dio, url, fullPath);
+                        showSnackBar("Download Success");
+                      } catch (e) {
+                        showSnackBar("Download Failed");
                       }
                     },
                     child: Text(
@@ -130,30 +144,48 @@ class _DocumentCardState extends State<DocumentCard> {
     );
   }
 
- 
-  showAlertDialog(String title, String message) {
-
-  // set up the button
-  Widget okButton = FlatButton(
-    child: Text("OK"),
-    onPressed: () { },
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text(title),
-    content: Text(message),
-    actions: [
-      okButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+_launchURL(url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
 }
+
+  showSnackBar(String title) {
+    final snackBar = SnackBar(
+      content: Text(title),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  Future download2(Dio dio, String url, String savePath) async {
+    try {
+      Response response = await dio.get(
+        url,
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 500;
+            }),
+      );
+      print(response.headers);
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      print((received / total * 100).toStringAsFixed(0) + "%");
+    }
+  }
 }

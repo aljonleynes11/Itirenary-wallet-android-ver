@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
         child: SafeArea(
           child: Scaffold(
-            backgroundColor: Color(0xFF04294b),
+            backgroundColor: Colors.white,
             body: Container(
               padding: EdgeInsets.fromLTRB(40, 40, 40, 0),
               child:  Center(
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
               "Tours, Activities and Attraction Tickets",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+                  color: Colors.blue, fontSize: 25, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 15),
             Container(
@@ -79,20 +79,21 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               "Your local travel explorer",
               style: TextStyle(
-                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                  color: Colors.blue, fontSize: 12, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 15),
             Container(
+              height: 100,
                 child: FadeInImage(
                   placeholder: MemoryImage(kTransparentImage),
-                  image: AssetImage('assets/Splashscreen/logo.png'),
+                  image: AssetImage('assets/AssetImages/logo192transparent.png'),
                 )
             ),
-            SizedBox(height: 100),
+          
             Text(
               "Powered by Travelz ©",
               style: TextStyle(
-                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),
+                  color: Colors.blue, fontSize: 12, fontWeight: FontWeight.normal),
             ),
           ],
         ));

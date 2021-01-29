@@ -178,8 +178,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       });
       Response response =
       await Dio().post("https://www.travezl.com/mobile/api/itinerary.php",
-         // data: {"customer_id": customerId});
-           data: {"customer_id": 859});
+         data: {"customer_id": customerId});
+         // data: {"customer_id": 858});
       if (response.statusCode == 200) {
         if (response.data.contains("error")) {
           final res = json.decode(response.data);
@@ -219,15 +219,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     for(var item in itineraries){
       var now = new DateTime.now();
       var endDate = DateTime.parse(item.travelEndDate);
-      
       bool isPast = endDate.isBefore(now);
-      print(isPast);
-      
-      
-      
+
       upComingItineraries.clear();
       pastItineraries.clear();
-      if(item.status != "1" || isPast == true) {
+      if(item.status != "1" || isPast) {
         pastItineraries.add(item);
       } else {
         upComingItineraries.add(item);
@@ -241,6 +237,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       child: Text("OK"),
       onPressed: () {
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
       },
     );
 
@@ -248,7 +245,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     AlertDialog alert = AlertDialog(
       content: Text(message),
       actions: [
-        okButton,
+         okButton,
       ],
     );
 

@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       child: SafeArea(
         child: Scaffold(
-            backgroundColor: Color(0xFF04294b),
+            backgroundColor: Colors.white,
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.fromLTRB(40, 40, 40, 0),
@@ -96,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
         Container(
             width: 150,
             height: 150,
-            child: Image.asset('assets/Images/logo.png')),
+           // child: Image.asset('assets/Images/logo.png')),
+                child: Image.asset('assets/AssetImages/logo192transparent.png')),
         SizedBox(height: 40),
         Text(
           "ITINERARY WALLET",

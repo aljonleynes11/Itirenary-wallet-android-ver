@@ -6,6 +6,8 @@ import 'package:itinerary_wallet/common/itinerary_card.dart';
 import 'package:itinerary_wallet/models/itineraryDocument.dart';
 import 'package:itinerary_wallet/pages/itinerary_page/document_page.dart';
 
+import 'document_solo.dart';
+
 class ItineraryPage extends StatefulWidget {
   final List<ItineraryDocument> itineraryDetails;
   final String title;
@@ -119,14 +121,25 @@ class _ItineraryPageState extends State<ItineraryPage> {
       child: ItineraryCard(
         onPressed: (active)
             ? () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => DocumentPage(
+                //           title: this.widget.title,
+                //           description: description,
+                //           icon: icons[index].toString(),
+                //           itineraryDocuments: this.widget.itineraryDetails,
+                //         )));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DocumentPage(
+                        builder: (context) => DocumentSolo(
                           title: this.widget.title,
                           description: description,
                           icon: icons[index].toString(),
-                          itineraryDocuments: this.widget.itineraryDetails,
+                          startDate: this.widget.startDate,
+                          endDate: this.widget.endDate, 
+                          documentName: widget.itineraryDetails[0].documentFileName,
                         )));
               }
             : null,
